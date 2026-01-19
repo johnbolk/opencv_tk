@@ -11,7 +11,7 @@ This package adds a fully compatible **PictureBox** widget to Tkinter's set of g
 # Installation
 
 ```
-pip install opencv_tk
+pip install opencv-tk
 ```
 
 # API
