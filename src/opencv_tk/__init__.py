@@ -7,6 +7,6 @@ This package provides the following class definitions:
 * ImageMode   - A data class of the available image display mode options
 """
 
-__version__ = '1.2.0'
+__version__ = '1.2.1'
 
 from .picturebox import PictureBox, BorderStyle, ImageMode

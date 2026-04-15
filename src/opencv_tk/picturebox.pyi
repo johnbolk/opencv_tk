@@ -1,13 +1,12 @@
 import cv2
+import enum
 import numpy as np
 import tkinter as tk
-from dataclasses import dataclass
 from typing import Any
 
 __version__: str
 
-@dataclass(frozen=True)
-class BorderStyle:
+class BorderStyle(enum.Enum):
     Raised: str
     Sunken: str
     Groove: str
@@ -15,8 +14,7 @@ class BorderStyle:
     Solid: str
     Flat: str
 
-@dataclass(frozen=True)
-class ImageMode:
+class ImageMode(enum.Enum):
     Normal: int
     CenterImage: int
     StretchImage: int
