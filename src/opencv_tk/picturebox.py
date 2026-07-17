@@ -7,8 +7,9 @@ This module provides the following class definitions:
 * ImageMode   - A data class of the available image display mode options
 """
 
-__version__ = '1.2.0'
+__version__ = '1.2.3'
 
+import os
 import platform
 import warnings
 from typing import Any, Tuple, Union
@@ -108,8 +109,12 @@ class PictureBox(tk.Label):
         and the image display mode is set to ImageMode.Normal
         """
         super().__init__(parent)
-        linux = platform.platform().startswith('Linux')
-        color = ImageColor.getrgb('#d9d9d9' if linux else '#f0f0f0')[0:3]
+        screen_color = '#f0f0f0'
+        if platform.system() == 'Linux':
+            screen_color = '#d9d9d9'
+        elif platform.system() == 'Darwin':
+            screen_color = '#ffffff'
+        color = ImageColor.getrgb(screen_color)[0:3]
         size = (max(1, int(width)), max(1, int(height)))
         mode = ImageMode.Normal
         image = Image.new('RGB', size, color)
@@ -145,7 +150,7 @@ class PictureBox(tk.Label):
             self['bd'] = width
             self['relief'] = style
         else:
-            warnings.warn('Invalid border style designator', stacklevel=2)
+            warnings.warn('Invalid border style designator!', stacklevel=2)
 
     @property
     def image_mode(self) -> int:
@@ -165,7 +170,7 @@ class PictureBox(tk.Label):
             self._widget.mode = mode
             self._create_displayed_image()
         else:
-            warnings.warn('Invalid image mode designator', stacklevel=2)
+            warnings.warn('Invalid image mode designator!', stacklevel=2)
 
     @property
     def height(self) -> int:
@@ -195,12 +200,12 @@ class PictureBox(tk.Label):
         self._image = np.array(self._widget.image)
         self._redraw_image()
 
-    def display(self, image: Union[np.ndarray, cv2.Mat, None]) -> bool:
+    def display(self, image: Union[np.ndarray, cv2.Mat]) -> bool:
         """Display the specified image in the PictureBox.
 
         Parameters
         ----------
-        image : ndarray | Mat | None
+        image : ndarray | Mat
             Images with a color space representation of Grayscale,
             BGR, or BGRA will be displayed correctly in the PictureBox.
             The cv2.cvtColor(src, code) function should to used to convert
@@ -224,7 +229,7 @@ class PictureBox(tk.Label):
             self._create_displayed_image()
             success = True
         else:
-            warnings.warn('Missing or invalid image', stacklevel=2)
+            warnings.warn('Missing or invalid image!', stacklevel=2)
             success = False
         return success
 
@@ -241,7 +246,16 @@ class PictureBox(tk.Label):
         bool
             True if the image was successfully loaded, False otherwise
         """
-        return self.display(cv2.imread(filename, cv2.IMREAD_COLOR_BGR))
+        success = False
+        if os.path.isfile(filename):
+            image = cv2.imread(filename, cv2.IMREAD_COLOR_BGR)
+            if image is not None:
+                success = self.display(image)
+            else:
+                warnings.warn('Invalid image file!', stacklevel=2)
+        else:
+            warnings.warn('The image file does not exist!', stacklevel=2)
+        return success
 
     def save(self, filename: str) -> bool:
         """Save the currently displayed image to the specified file.
@@ -260,7 +274,7 @@ class PictureBox(tk.Label):
         try:
             success = cv2.imwrite(filename, image)
         except cv2.error:
-            warnings.warn('Invalid image filename', stacklevel=2)
+            warnings.warn('Invalid image filename!', stacklevel=2)
             success = False
         return success
 
@@ -286,7 +300,7 @@ class PictureBox(tk.Label):
                 self._widget.color = self._rgb(color)
             self._redraw_widget()
         except ValueError:
-            warnings.warn('Unrecognized background color name', stacklevel=2)
+            warnings.warn('Unrecognized background color name!', stacklevel=2)
 
     def _backgnd_image(self) -> Any:
         """Generate a new background color image."""
@@ -375,7 +389,7 @@ class PictureBox(tk.Label):
             color_value = tuple(max(0, min(value, 255)) for value in color)
         else:
             color_value = self._widget.color
-            warnings.warn('Invalid background color value', stacklevel=3)
+            warnings.warn('Invalid background color value!', stacklevel=3)
         return color_value
 
     @staticmethod

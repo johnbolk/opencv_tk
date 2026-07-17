@@ -2,7 +2,7 @@
 
 **A Tkinter PictureBox widget for displaying an OpenCV image.**
 
-This package assumes that either **opencv-python** or **opencv-contrib-python** is currently installed in the user's development environment, and that the user is reasonably familiar with the OpenCV library.
+This package assumes that either the **opencv-python** or the **opencv-contrib-python** package is currently installed in the user's development environment, and that the user is reasonably familiar with the OpenCV library.
 
 Although OpenCV provides the **cv2.namedWindow()** and **cv2.imshow()** methods for displaying an OpenCV image in its own desktop window, this approach does not lend itself to displaying an OpenCV image inside the framework of a user created Tkinter window based application.
 
@@ -14,7 +14,7 @@ This package adds a fully compatible **PictureBox** widget to Tkinter's set of g
 pip install opencv-tk
 ```
 
-# API
+# API Documentation
 
 This package provides the following class definitions **:**
 
@@ -24,95 +24,87 @@ This package provides the following class definitions **:**
 
 ## PictureBox
 
-### PictureBox(parent, width, height)
+### PictureBox( *parent*, *width*, *height* )
 
-**parent -** The parent widget of the PictureBox.
+* ***parent* : Any -** The parent widget of the PictureBox.
 
-**width -** The initial width of the PictureBox. (in pixels)
+* ***width* : int -** The initial width of the PictureBox. (in pixels)
 
-**height -** The initial height of the PictureBox. (in pixels)
+* ***height* : int -** The initial height of the PictureBox. (in pixels)
 
 By default, the **border_style** property is set to **BorderStyle.Flat**, and the **image_mode** property is set to **ImageMode.Normal**.
 
-<div style="page-break-after: always;"></div>
+<div class="page"/>
 
 ### Properties
 
 All of the PictureBox properties have read and write permissions.
 
-**border_style -** The border style of the PictureBox. This property can be set to any one of the available BorderStyle options **(e.g. BorderStyle.Ridge)**.
+* **border_style : str -** The border style of the PictureBox. This property can be set to any one of the available BorderStyle options **(e.g. BorderStyle.Ridge)**.
 
-**image_mode -** The image display mode of the PictureBox. This property can be set to any one of the available ImageMode options **(e.g. ImageMode.Zoom)**.
+* **image_mode : int -** The image display mode of the PictureBox. This property can be set to any one of the available ImageMode options **(e.g. ImageMode.Zoom)**.
 
-**height -** The current height of the PictureBox. (in pixels)
+* **height : int -** The current height of the PictureBox. (in pixels)
 
-**width -** The current width of the PictureBox. (in pixels)
+* **width : int -** The current width of the PictureBox. (in pixels)
 
 ### Methods
 
-**clear() -** Clear the currently displayed image.
+* **clear( ) :** Clear the currently displayed image.
 
-**display(image) -** Display the OpenCV image in the PictureBox.
+* **display( *image* ) -> bool :** Display the OpenCV image in the PictureBox. Returns **True** if the specified image is valid, **False** otherwise
+    * ***image* : numpy.ndarray | cv2.Mat -** Images with a color space representation of Grayscale, BGR, or BGRA will be displayed correctly in the PictureBox. The **cv2.cvtColor(src, code)** function should to used to convert images, with other color spaces, into the BGR color space.
 
-**load(filename) -** Load and display an image from a file.
+* **load( *filename* ) -> bool :** Load and display an image from a file. Returns **True** if the image was successfully loaded and displayed, **False** otherwise.
+    * ***filename* : str -** The full pathname of the image file.
 
-**save(filename) -** Save the currently displayed image to a file.
+* **save( *filename* ) -> bool :** Save the currently displayed image to a file. Returns **True** if the image was successfully saved, **False** otherwise.
+    * ***filename* : str -** The full pathname of the image file.
 
-**set_background(color) -** Set the background color of the PictureBox. The color parameter value can be provided in one of the following forms **:**
-* It can be expressed as a named color string, e.g. **'white'**. A defined set of named colors can be found at **:** [CSS Color 4: Named Colors](https://drafts.csswg.org/css-color-4/#named-colors)
-* It can be expressed as a 6-digit hexadecimal notation color string **'#rrggbb'**
-* It can be expressed as a tuple color value **(red, green, blue)** that conforms to one of these formats **:**
-    * Three integer color components ranging in value from 0 to 255
-    * Three floating point color components ranging in value from 0.0 to 1.0
+* **set_background( *color* ) -** Set the background color of the PictureBox. The ***color*** parameter value can be provided in one of the following forms **:**
+    * It can be expressed as a named color string, e.g. **'white'**. A defined set of named colors can be found at **:** [CSS Color 4: Named Colors](https://drafts.csswg.org/css-color-4/#named-colors)
+    * It can be expressed as a 6-digit hexadecimal notation color string **'#rrggbb'**
+    * It can be expressed as a tuple color value **( red, green, blue )** that conforms to one of two formats **:**
+        * Three integer color components ranging in value from 0 to 255
+        * Three floating point color components ranging in value from 0.0 to 1.0
 
-<div style="page-break-after: always;"></div>
+<div class="page"/>
 
 ## BorderStyle
 
 **These are the available border style options for the PictureBox.**
 
-**Raised -**
-The PictureBox appears raised above the background.
+* **Raised -** The PictureBox appears raised above the background.
 
-**Sunken -**
-The PictureBox appears recessed into the background.
+* **Sunken -** The PictureBox appears recessed into the background.
 
-**Groove -**
-The PictureBox has a carved groove border.
+* **Groove -** The PictureBox has a carved groove border.
 
-**Ridge -**
-The PictureBox has a raised ridge border.
+* **Ridge -** The PictureBox has a raised ridge border.
 
-**Solid -**
-The PictureBox has a simple solid border.
+* **Solid -** The PictureBox has a simple solid border.
 
-**Flat -**
-The PictureBox appears flat, no border.
+* **Flat -** The PictureBox appears flat, no border.
 
 ## ImageMode
 
 **These are the available image display mode options for the PictureBox.**
 
-**Normal -**
-The image is placed in the upper-left corner of the PictureBox. The image is clipped if it is larger than the PictureBox.
+* **Normal -** The image is placed in the upper-left corner of the PictureBox. The image is clipped if it is larger than the PictureBox.
 
-**CenterImage -**
-If the PictureBox is larger than the image, the image is displayed in the center of the PictureBox. If the image is larger than the PictureBox, the image is centered in the PictureBox, and the outside edges of the image are clipped.
+* **CenterImage -** If the PictureBox is larger than the image, the image is displayed in the center of the PictureBox. If the image is larger than the PictureBox, the image is centered in the PictureBox, and the outside edges of the image are clipped.
 
-**StretchImage -**
-The image is stretched or shrunk to fit the size of the PictureBox.
+* **StretchImage -** The image is stretched or shrunk to fit the size of the PictureBox.
 
-**AutoSize -**
-The size of PictureBox is changed to match the size of the image.
+* **AutoSize -** The size of PictureBox is changed to match the size of the image.
 
-**Zoom -**
-The size of the image is increased or decreased to fit the size of the PictureBox, while keeping the image's original size ratio.
+* **Zoom -** The size of the image is increased or decreased to fit the size of the PictureBox, while keeping the image's original size ratio.
 
 # User Notes
 
 The PictureBox widget is derived from the Tkinter Label widget. This means that the PictureBox inherits all of the Universal Tkinter widget methods, and that all of these methods are available to the user. This also means that all of the Label widget's options are exposed to the user. To avoid the possibility of creating any unpredictable PictureBox behavior, the user should never directly modify the values of the underlying Label widget's options. The one exception to this "hands-off rule" is that the user can safely modify the widget's **'state'** value.
 
-<div style="page-break-after: always;"></div>
+<div class="page"/>
 
 # PictureBox Usage Example
 
